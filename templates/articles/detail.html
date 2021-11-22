@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+{% load ratings %}
+
+{% block title %}{{ article.article_title }}{% endblock %}
+
+{% block content %}
+        <a class="btn btn-default" href="{% url 'articles:index' %}" class="top-menu"><span class="glyphicon glyphicon-chevron-left"></span>Назад к списку статей</a><br>
+
+    {% if user.is_authenticated %}
+        <a class="btn btn-default" href="{% url 'articles:edit' article.id %}"><span class="glyphicon glyphicon-pencil"></span>Редактировать</a>
+    {% endif %}
+
+    <h2>{{ article.article_title }}</h2>
+    <em>by {{ article.author_name }}</em>
+      {% ratings article %}
+    <p>{{ article.article_text|safe }}</p>
+    <em>{{ article.pub_date }}</em>
+
+    {% if article.was_published_recently %}
+        <em>| New!</em>
+    {% endif %}
+
+    <hr>
+
+
+
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'articles:leave_comment' article.id %}" method="post">
+
+        {% csrf_token %}
+
+{#        <input type="text" required placeholder="Ваше имя" name="name"><br>#}
+        <textarea name="text" required="" placeholder="Ваш комментарий" cols="30" rows="10"></textarea><br>
+        <button type="submit">Оставить комментарий</button>
+
+        </form>
+    {% else %}
+        <em>Только зарегистрированные пользователи могут оставлять коммнетарии</em>
+    {% endif %}
+
+    <hr>
+    {% if latest_comment_list %}
+
+        {% for c in latest_comment_list %}
+        <p>
+            <strong>{{ c.author_name }}</strong>
+            <p>{{ c.comment_text }}</p>
+        </p>
+        {% endfor %}
+
+    {% else %}
+        К данной статье нет комментариев.
+    {% endif %}
+
+{% endblock %}

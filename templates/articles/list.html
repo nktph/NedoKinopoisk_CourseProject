@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Последние обзоры{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <a class="btn btn-default" href="{% url 'articles:new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span>Новая статья</a>
+    {% endif %}
+
+    {% if latest_articles_list %}
+         <ul>
+        {% for a in latest_articles_list %}
+           <li>
+            <a href={% url 'articles:detail' a.id %}>{{a.article_title}}</a>
+           </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        Статьи не найдены. Будьте первым!
+    {% endif %}
+
+{% endblock %}

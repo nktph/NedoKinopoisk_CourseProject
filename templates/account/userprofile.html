@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center;" class="mt-2">
+    {% if user.is_superuser %}
+        <h3>Профиль администратора {{ user.username }}</h3>
+    {% else %}
+        <h3>Профиль пользователя {{ user.username }}</h3>
+    {% endif %}
+    <hr>
+</div>
+
+{% if article_list %}
+
+    <div style="text-align: center;">
+        {% if user.is_superuser %}
+        <a>Всего лайков у статей: {{ likes_count }}</a>
+    <hr>
+        <h3>Все статьи</h3>
+    {% else %}
+        <a>Всего получено лайков: {{ likes_count }}</a>
+    <hr>
+        <h3>Ваши статьи</h3>
+    {% endif %}
+
+        <a class="btn btn-outline-secondary mb-4" href="{% url 'articles:new' %}">Новая статья</a>
+    </div>
+    {% for a in article_list %}
+        <div class="col d-flex justify-content-center">
+            <div class="card w-75">
+                <div class="card-body">
+                    <h5 class="card-title">{{a.article_title}}</h5>
+                    <em class="card-text">by {{ a.author_name }}</em>
+                    <p><em>Опубликовано: {{ a.pub_date }}</em><br>теги: {{ a.tags.all|join:", "  }}</p>
+                    <p>Категория: {{ a.group }}</p>
+                    <p>Лайков: {{ a.likes }}</p>
+                    <p>Рейтинг: {{ a.avg_rating }}</p>
+                    <a class="btn btn-outline-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+                    <a class="btn btn-outline-success" href={% url 'articles:edit' a.id %}>Редактировать</a>
+                    <a class="btn btn-outline-danger" href={% url 'articles:detail' a.id %}>Удалить</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div style="text-align: center;">
+        <h3>У вас ещё нет ни одной написанной статьи. Исправьте это!</h3>
+        <a class="btn btn-outline-secondary" href="{% url 'articles:new' %}">Новая статья</a>
+    </div>
+{% endif %}
+
+
+{% endblock %}

@@ -7,6 +7,9 @@
 {% block title %}Редактирование статьи{% endblock %}
 
 {% block content %}
+
+    <a class="btn btn-default" href="{% url 'articles:index' %}" class="top-menu"><span class="glyphicon glyphicon-remove"></span>Отмена</a><br>
+
     <h1>Редактирование статьи</h1>
 
     <script>
@@ -14,16 +17,18 @@
         language:'ru',
       selector: 'textarea',
       plugins: 'casechange formatpainter linkchecker autolink lists checklist media permanentpen table paste link',
-        menubar: "format",
-      toolbar: 'casechange checklist formatpainter paste permanentpen table link',
+        menubar: "format insert",
+      toolbar: 'casechange checklist formatpainter paste permanentpen table link media',
       toolbar_mode: 'floating',
         paste_data_images: true,
+
     });
   </script>
-
-    <form method="POST" class="post-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Сохранить</button>
-    </form>
+    <div class="fieldBox">
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-outline-success">Сохранить</button>
+        </form>
+    </div>
 {% endblock %}

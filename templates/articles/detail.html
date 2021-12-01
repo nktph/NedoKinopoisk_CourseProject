@@ -1,49 +1,73 @@
 {% extends 'base.html' %}
 
-{% load static %}
-<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
-<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
-{% load ratings %}
-
 {% block title %}{{ article.article_title }}{% endblock %}
 
 {% block content %}
-        <a class="btn btn-default" href="{% url 'articles:index' %}" class="top-menu"><span class="glyphicon glyphicon-chevron-left"></span>Назад к списку статей</a><br>
-
+    <a class="btn btn-outline-dark" href="{% url 'articles:index' %}"><span
+            class="bi bi-card-list"></span> Перейти к списку статей</a><br>
     {% if user.is_authenticated %}
-        <a class="btn btn-default" href="{% url 'articles:edit' article.id %}"><span class="glyphicon glyphicon-pencil"></span>Редактировать</a>
+        {% if user.is_superuser or user.username == article.author_name %}
+            <a class="btn btn-outline-success" href="{% url 'articles:edit' article.id %}">Редактировать</a>
+        {% endif %}
     {% endif %}
 
     <h2>{{ article.article_title }}</h2>
-    <em>by {{ article.author_name }}</em>
-      {% ratings article %}
+    <em>by {{ article.author_name }}</em><br>
+    <em>Категория: {{ article.group }}</em>
+    {% if ratings_avg %}
+        <h3><strong>Рейтинг: {{ ratings_avg }} / 5</strong></h3>
+        <h5><em>Проголосовало пользователей: {{ ratings_count }}</em></h5>
+    {% else %}
+        <h4><strong>Статья не оценена ни одним пользователем. Будьте первым, кто выставит рейтинг!</strong></h4>
+    {% endif %}
+
+    {% if article.tags.all %}
+        <em>Теги: <strong>{{ article.tags.all|join:", "  }}</strong></em>
+    {% else %}
+        <em>У данной статьи не указаны теги</em>
+    {% endif %}
+    <hr>
     <p>{{ article.article_text|safe }}</p>
+    <p>Оценка автора: {{ article.author_mark }}</p>
+
     <em>{{ article.pub_date }}</em>
 
     {% if article.was_published_recently %}
         <em>| New!</em>
     {% endif %}
 
+
+
     <hr>
-
-
-
-
     {% if user.is_authenticated %}
+
+        <div class="card-action">
+        <a class="btn btn-primary" href="{% url 'articles:article-like' article.id %}" class="top-menu">Мне нравится {{ article.likes }}</a><br>
+        </div>
+
+        <br>
+        <div>
+            <h3>Оцените статью</h3>
+            <form method="post" action="{% url 'articles:article-rate' article.id %}" role="form" class="col s12">
+                {% csrf_token %}
+
+                <div class="input-field col s12">
+                    {{ form.rate }}
+                </div>
+                <button type="submit" name="action" class="btn btn-outline-secondary">Оценить</button>
+            </form>
+        </div>
+
+        <hr>
+        <h3>Оставьте комментарий</h3>
         <form action="{% url 'articles:leave_comment' article.id %}" method="post">
-
         {% csrf_token %}
-
-{#        <input type="text" required placeholder="Ваше имя" name="name"><br>#}
         <textarea name="text" required="" placeholder="Ваш комментарий" cols="30" rows="10"></textarea><br>
         <button type="submit">Оставить комментарий</button>
-
         </form>
-    {% else %}
-        <em>Только зарегистрированные пользователи могут оставлять коммнетарии</em>
-    {% endif %}
 
-    <hr>
+        <hr>
+        <h3><strong>Комментарии</strong></h3>
     {% if latest_comment_list %}
 
         {% for c in latest_comment_list %}
@@ -52,9 +76,12 @@
             <p>{{ c.comment_text }}</p>
         </p>
         {% endfor %}
-
     {% else %}
         К данной статье нет комментариев.
     {% endif %}
+    {% else %}
+        <em>Авторизуйтесь, чтобы ставить лайки, смотреть и оставлять комментарии, а также выставлять рейтинг</em>
+    {% endif %}
+
 
 {% endblock %}

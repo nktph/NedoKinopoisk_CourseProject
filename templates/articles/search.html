@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div style="text-align: center;">
+        <div>
+            {% if searched %}
+                {% if searched|length < 70 %}
+                    <h1>Вы искали "{{ searched }}"</h1>
+                    <br>
+                {% else %}
+                    <h1>Вы искали "{{ searched|slice:70 }}..."</h1>
+                    <br>
+                {% endif %}
+        </div>
+        <div class="inarticles">
+                {% if in_articles %}
+                    <h1>Совпадения по заголовкам</h1>
+                    {% for a in in_articles %}
+                    <a href={% url 'articles:detail' a.id %}>{{a.article_title}}</a>
+                    <em>by {{ a.author_name }}</em><br>
+                    {% endfor %}
+                {% endif %}
+        </div>
+        <div class="intext">
+                {% if in_text %}
+                    <h1>Совпадения по тексту</h1>
+                    {% for a in in_text %}
+                    <a href={% url 'articles:detail' a.id %}>{{a.article_title}}</a>
+                    <em>by {{ a.author_name }}</em><br>
+                    {% endfor %}
+                {% endif %}
+        </div>
+        <div class="intags">
+                {% if in_tags %}
+                    <h1>Совпадения по тегам</h1>
+                    {% for t in in_tags %}
+                    <a href={% url 'articles:detail' t.id %}>{{ t.article_title }}</a>
+                    <p>теги: {{ t.tags.all|join:", "  }}</p>
+                    <em>by {{ t.author_name }}</em><br>
+                    {% endfor %}
+                {% endif %}
+        </div>
+        <div class="incomments">
+                {% if in_comments %}
+                    <h1>Совпадения по комментариям</h1>
+                    {% for c in in_comments %}
+                        <a href={% url 'articles:detail' c.article.id %}>{{c.article.article_title}}</a>
+                        <em>by {{ c.article.author_name }}</em><br>
+                        {% if user.is_authenticated %}
+                            <em>Комментарий пользователя {{c.author_name}}:</em>
+                            {% if c.comment_text|length > 50 %}
+                                <a>{{ c.comment_text|slice:50}}...</a>
+                            {% else %}
+                                <a>{{ c.comment_text }}</a>
+                            {% endif %}
+                        {% else %}
+                            <em>Чтение комментариев доступно только аутентифицированным пользователям</em>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        </div>
+            {%if not in_articles and not in_text and not in_comments and  not in_tags %}
+                <h1>Ничего не найдено</h1>
+            {% endif %}
+        {% else %}
+            <h1>Поисковый запрос пуст. Попробуйте ввести что-то, вдруг получится лучше =)</h1>
+        {% endif %}
+        <hr>
+        <a class="btn btn-outline-dark" href="{% url 'articles:index' %}"><span
+                class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    </div>
+{% endblock %}

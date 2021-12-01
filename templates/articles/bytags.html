@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Поиск по облаку тегов{% endblock %}
+{% block content %}
+
+    <div style="text-align: center;">
+        {% if articles %}
+            <div>
+                <h1 class="mt-4">Статьи с тегом "{{ tagname }}"</h1>
+                <br>
+            </div>
+
+            <div class="intags">
+                {% for a in articles %}
+                    <a href={% url 'articles:detail' a.id %}>{{ a.article_title }}</a>
+                    <p>теги: {{ a.tags.all|join:", "  }}</p>
+                    <em>by {{ a.author_name }}</em><br>
+                {% endfor %}
+            </div>
+        {% else %}
+            Что-то пошло не так
+        {% endif %}
+        <hr>
+        <a class="btn btn-outline-dark" href="{% url 'articles:index' %}"><span
+                class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    </div>
+{% endblock %}

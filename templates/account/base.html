@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+
+  <meta charset="UTF-8">
+    <title>{% block title %}NedoKinopoisk{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <meta name="google" content="notranslate" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
+  </head>
+  <body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    {% block body %}
+
+    {% if messages %}
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+{#    <div>#}
+{#      <strong>Menu:</strong>#}
+{#      <ul>#}
+{#        {% if user.is_authenticated %}#}
+{#        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>#}
+{#        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>#}
+{#        {% else %}#}
+{#        <li><a href="{% url 'account_login' %}">Sign In</a></li>#}
+{#        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>#}
+{#        {% endif %}#}
+{#      </ul>#}
+{#    </div>#}
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}" role="button"><button type="button" class="btn btn-dark">NedoKinopoisk</button></a>
+        <form class="d-flex" method="post" action="{% url 'articles:search' %}">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Поиск"
+                   aria-label="Search" name="searched">
+            <button class="btn btn-outline-success" type="submit">Поиск</button>
+        </form>
+    </div>
+</nav>
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+  </body>
+</html>

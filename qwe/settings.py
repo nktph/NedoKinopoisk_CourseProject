@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'grappelli',
     'filebrowser',
     'django.contrib.admin',
@@ -39,13 +40,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'articles',
+    'articles.apps.ArticlesConfig',
     'crispy_forms',
     'tinymce',
-    'star_ratings',
+    'taggit',
+
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.github',
+
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
+TAGGIT_CASE_INSENSITIVE = True
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,11 +101,24 @@ WSGI_APPLICATION = 'qwe.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_postgres',
+        'USER': 'postgres',
+        'PASSWORD': '30082001nik',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -122,6 +151,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# gettext = lambda s: s
+# LANGUAGES=(
+#     ('ru', gettext('Russia')),
+#     ('en', gettext('English')),
+# )
 
 
 # Static files (CSS, JavaScript, Images)
@@ -171,12 +206,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'statusbar': True,
     "language": "en_US",
 }
-
-STAR_RATINGS_ANONYMOUS = False
-STAR_RATINGS_RERATE = True
-STAR_RATINGS_RERATE_SAME_DELETE = True
-STAR_RATINGS_RANGE = 5
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

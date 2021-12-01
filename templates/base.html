@@ -1,17 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 {% block tinymce %}{% endblock %}
 
     <meta charset="UTF-8">
-    <title>{% block title %}Мой сайт{% endblock %}</title>
-
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-
-
+    <title>{% block title %}NedoKinopoisk{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <meta name="google" content="notranslate" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<header class="navbar navbar-expand-lg navbar-light bg-dark margin-bottom 25px d-flex">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}" role="button"><button type="button" class="btn btn-dark">NedoKinopoisk</button></a>
+        {% if user.is_authenticated %}
+            <a style="color: #9a9a9a">Добро пожаловать, {{ user.username }}</a>
+            <a class="navbar-link" href="{% url 'userprofile' %}" role="button"><button type="button" class="btn btn-dark">Профиль</button></a>
+
+            <a class="navbar-link" href="{% url 'account_logout' %}" role="button"><button type="button" class="btn btn-dark">Выйти</button></a>
+        {% else %}
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="navbar-link" href="{% url 'account_login' %}" role="button"><button type="button" class="btn btn-dark">Войти</button></a>
+                </li>
+                <li class="nav-item">
+                    <a class="navbar-link" href="{% url 'account_signup' %}" role="button"><button type="button" class="btn btn-dark">Зарегистрироваться</button></a>
+                </li>
+            </ul>
+            </div>
+        {% endif %}
+        <form class="d-flex" method="post" action="{% url 'articles:search' %}">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Поиск"
+                   aria-label="Search" name="searched">
+            <button class="btn btn-outline-success" type="submit">Поиск</button>
+        </form>
+    </div>
+</header>
 
 {% block content %}{% endblock %}
 

@@ -29,7 +29,10 @@ SECRET_KEY = 'django-insecure-bx#!&nyfsv^c&kcpd-cut=6(8nq=0rpbtdl59+h8j&y%!xz&+^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0', 'localhost', '127.0.0.1',
+    'nedokinopoisk.herokuapp.com'
+]
 
 
 # Application definition
@@ -103,20 +106,19 @@ WSGI_APPLICATION = 'qwe.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'db_postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': '30082001nik',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_postgres',
+        'USER': 'postgres',
+        'PASSWORD': '30082001nik',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
 }
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
+
 
 
 AUTHENTICATION_BACKENDS = [
@@ -224,3 +226,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.ManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
 
+SECRET_KEY = 'secretkey'
+EMAIL_HOST_USER = 'nkt.ph.coop@gmail.com'
+EMAIL_HOST_PASSWORD = ''

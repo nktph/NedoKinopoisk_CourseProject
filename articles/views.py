@@ -21,13 +21,9 @@ def userprofile(request):
         article_list = Article.objects.all()
     else:
         article_list = Article.objects.filter(author_name=request.user.username)
-
-
     likes_count=0
-
     for a in article_list:
         likes_count+=a.likes
-
     return render(request, 'account/userprofile.html', {'article_list': article_list,
                                                         'likes_count':likes_count,})
 
@@ -134,6 +130,10 @@ def edit(request, article_id):
         form = ArticleForm(instance=article)
     return render(request, 'articles/edit.html', {'form': form})
 
+def delete(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    article.delete()
+    return userprofile(request)
 
 def search(request):
     if request.method == "POST":

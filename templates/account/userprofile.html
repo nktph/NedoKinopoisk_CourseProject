@@ -37,7 +37,7 @@
                     <p>Рейтинг: {{ a.avg_rating }}</p>
                     <a class="btn btn-outline-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
                     <a class="btn btn-outline-success" href={% url 'articles:edit' a.id %}>Редактировать</a>
-                    <a class="btn btn-outline-danger" href={% url 'articles:detail' a.id %}>Удалить</a>
+                    <a class="btn btn-outline-danger" href={% url 'articles:delete' a.id %}>Удалить</a>
                 </div>
             </div>
         </div>

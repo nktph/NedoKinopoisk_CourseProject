@@ -1,6 +1,5 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
-
 
 app_name = 'articles'
 urlpatterns = [
@@ -9,6 +8,7 @@ urlpatterns = [
     path('<int:article_id>/leave_comment/', views.leave_comment, name="leave_comment"),
     path('new/', views.new, name="new"),
     path('<int:article_id>/edit/', views.edit, name="edit"),
+    path('<int:article_id>/delete/', views.delete, name="delete"),
     path('<int:article_id>/rate/', views.rate, name="article-rate"),
     path('<int:article_id>/like/', views.like, name="article-like"),
     path('search/', views.search, name="search"),

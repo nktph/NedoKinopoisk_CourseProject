@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
 from .forms import ArticleForm, RatingForm
 from django.utils import timezone
-from django.contrib.postgres.search import SearchVector, TrigramSimilarity
+from django.contrib.postgres.search import SearchVector, TrigramSimilarity, SearchQuery, SearchRank
 from taggit.models import Tag
 
 
@@ -139,13 +139,22 @@ def search(request):
     if request.method == "POST":
         searched = request.POST.get('searched')
 
-        articles = Article.objects.annotate(similarity = TrigramSimilarity('article_title', searched),).filter(
-            similarity__gt=0.1).order_by('-similarity')
+        vector = SearchVector('article_title')
 
-        text = Article.objects.annotate(search=SearchVector('article_text')).filter(search=searched)
 
-        comments = Comment.objects.annotate(similarity=TrigramSimilarity('comment_text', searched), ).filter(
-            similarity__gt=0.1).order_by('-similarity')
+
+        articles = Article.objects.annotate(search=SearchVector('article_title')).filter(search=str(searched))
+
+        text = Article.objects.annotate(search=SearchVector('article_text')).filter(search=str(searched))
+
+        comments = Comment.objects.annotate(search=SearchVector('comment_text')).filter(search=str(searched))
+
+        # articles = Article.objects.annotate(similarity = TrigramSimilarity('article_title', searched),).filter(
+        #     similarity__gt=0.1).order_by('-similarity')
+        # text = Article.objects.annotate(search=SearchVector('article_text')).filter(search=searched)
+        # comments = Comment.objects.annotate(similarity=TrigramSimilarity('comment_text', searched), ).filter(
+        #     similarity__gt=0.1).order_by('-similarity')
+
         tags = Article.objects.filter(tags__name__in=[searched])
 
         return render(request, 'articles/search.html', {'searched':searched, 'in_articles':articles,

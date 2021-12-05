@@ -109,9 +109,9 @@ WSGI_APPLICATION = 'qwe.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_postgres',
+        'NAME': 'mydb',
         'USER': 'postgres',
-        'PASSWORD': '30082001nik',
+        'PASSWORD': 'qwe123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

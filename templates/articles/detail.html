@@ -2,12 +2,14 @@
 
 {% block title %}{{ article.article_title }}{% endblock %}
 
+{% block theme %}class="bg-{{ color }} text-dark"{% endblock %}
+
 {% block content %}
-    <a class="btn btn-outline-dark" href="{% url 'articles:index' %}"><span
+    <a class="btn btn-dark" href="{% url 'articles:index' %}"><span
             class="bi bi-card-list"></span> Перейти к списку статей</a><br>
     {% if user.is_authenticated %}
         {% if user.is_superuser or user.username == article.author_name %}
-            <a class="btn btn-outline-success" href="{% url 'articles:edit' article.id %}">Редактировать</a>
+            <a class="btn btn-info" href="{% url 'articles:edit' article.id %}">Редактировать</a>
         {% endif %}
     {% endif %}
 
@@ -27,7 +29,9 @@
         <em>У данной статьи не указаны теги</em>
     {% endif %}
     <hr>
-    <p>{{ article.article_text|safe }}</p>
+    <div class="">
+        <p>{{ article.article_text|safe }}</p>
+    </div>
     <p>Оценка автора: {{ article.author_mark }}</p>
 
     <em>{{ article.pub_date }}</em>
@@ -63,7 +67,7 @@
         <form action="{% url 'articles:leave_comment' article.id %}" method="post">
         {% csrf_token %}
         <textarea name="text" required="" placeholder="Ваш комментарий" cols="30" rows="10"></textarea><br>
-        <button type="submit">Оставить комментарий</button>
+        <button type="submit" class="btn btn-primary">Оставить комментарий</button>
         </form>
 
         <hr>

@@ -6,6 +6,8 @@
 
 {% block title %}Редактирование статьи{% endblock %}
 
+{% block theme %}class="bg-{{ color }} text-dark"{% endblock %}
+
 {% block content %}
 
     <a class="btn btn-default" href="{% url 'articles:index' %}" class="top-menu"><span class="glyphicon glyphicon-remove"></span>Отмена</a><br>
@@ -16,7 +18,7 @@
     tinymce.init({
         language:'ru',
       selector: 'textarea',
-      plugins: 'casechange formatpainter linkchecker autolink lists checklist media permanentpen table paste link',
+      plugins: 'casechange formatpainter linkchecker autolink lists checklist media permanentpen table paste link autoresize',
         menubar: "format insert",
       toolbar: 'casechange checklist formatpainter paste permanentpen table link media',
       toolbar_mode: 'floating',

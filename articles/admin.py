@@ -1,5 +1,5 @@
 from django.contrib import admin
-from articles.models import Article, Comment, Rating, Like
+from articles.models import Article, Comment, Rating, Like, Theme
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('article_title', 'group', 'author_name', 'pub_date')
@@ -22,5 +22,6 @@ class RatingAdmin(admin.ModelAdmin):
 
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Like)
+admin.site.register(Theme)
 
 

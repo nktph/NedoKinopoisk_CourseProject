@@ -103,3 +103,10 @@ class Like(models.Model):
     class Meta:
         verbose_name="Лайк"
         verbose_name_plural="Лайки"
+
+class Theme(models.Model):
+    color = models.CharField(max_length=10)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user

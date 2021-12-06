@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
 
 {% block title %}Последние обзоры{% endblock %}
-
+{% block theme %}class="bg-{{ color }} text-dark"{% endblock %}
 {% block content %}
+    <div style="text-align: center;">
+        <h3>Список статей</h3>
+        {% if user.is_authenticated %}
+            <a class="btn btn-success" href="{% url 'articles:new' %}">Новая статья</a>
+        {% endif %}
+    </div>
 
-    {% if user.is_authenticated %}
-        <a class="btn btn-outline-secondary" href="{% url 'articles:new' %}">Новая статья</a>
-    {% endif %}
 
     {% if articles_list %}
-
-        {% for a in articles_list %}
-           <div class="card w-75">
-                <div class="card-body">
-                    <h5 class="card-title">{{a.article_title}}</h5>
-                    <em class="card-text">by {{ a.author_name }}</em>
-                    <p><em>Опубликовано: {{ a.pub_date }}</em><br>теги: {{ a.tags.all|join:", "  }}</p>
-                    <a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+        <div style="text-align: center;">
+            {% for a in articles_list %}
+                <div class="col d-flex justify-content-center">
+                    <div class="card w-75 bg-{{ color }} text-dark">
+                        <div class="card-body">
+                            <h5 class="card-title">{{a.article_title}}</h5>
+                            <em class="card-text">by {{ a.author_name }}</em>
+                            <p><em>Опубликовано: {{ a.pub_date }}</em><br>теги: {{ a.tags.all|join:", "  }}</p>
+                            <a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-
+            {% endfor %}
+        </div>
     {% else %}
         Статьи не найдены. Будьте первым!
     {% endif %}

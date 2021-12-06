@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block theme %}class="bg-{{ color }} text-dark"{% endblock %}
+
 {% block content %}
 <div style="text-align: center;" class="mt-2">
     {% if user.is_superuser %}
@@ -9,7 +11,12 @@
     {% endif %}
     <hr>
 </div>
-
+    <div style="text-align: center;">
+        <h5>Тема</h5>
+        <a class="btn btn-light" href="/theme?color=light">Светлая</a>
+        <a class="btn btn-outline-dark" href="/theme?color=dark">Тёмная</a>
+    </div>
+     <hr>
 {% if article_list %}
 
     <div style="text-align: center;">
@@ -20,6 +27,7 @@
     {% else %}
         <a>Всего получено лайков: {{ likes_count }}</a>
     <hr>
+
         <h3>Ваши статьи</h3>
     {% endif %}
 
@@ -27,7 +35,7 @@
     </div>
     {% for a in article_list %}
         <div class="col d-flex justify-content-center">
-            <div class="card w-75">
+            <div class="card w-75 bg-{{ color }} text-dark">
                 <div class="card-body">
                     <h5 class="card-title">{{a.article_title}}</h5>
                     <em class="card-text">by {{ a.author_name }}</em>
@@ -35,9 +43,15 @@
                     <p>Категория: {{ a.group }}</p>
                     <p>Лайков: {{ a.likes }}</p>
                     <p>Рейтинг: {{ a.avg_rating }}</p>
-                    <a class="btn btn-outline-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
-                    <a class="btn btn-outline-success" href={% url 'articles:edit' a.id %}>Редактировать</a>
-                    <a class="btn btn-outline-danger" href={% url 'articles:delete' a.id %}>Удалить</a>
+                    {% if color == 'light' %}
+                        <a class="btn btn-outline-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+                        <a class="btn btn-outline-info" href={% url 'articles:edit' a.id %}>Редактировать</a>
+                        <a class="btn btn-outline-danger" href={% url 'articles:delete' a.id %}>Удалить</a>
+                    {% else %}
+                        <a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+                        <a class="btn btn-info" href={% url 'articles:edit' a.id %}>Редактировать</a>
+                        <a class="btn btn-danger" href={% url 'articles:delete' a.id %}>Удалить</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

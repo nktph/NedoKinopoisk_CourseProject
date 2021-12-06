@@ -96,7 +96,12 @@
             <h1>Поисковый запрос пуст. Попробуйте ввести что-то, вдруг получится лучше =)</h1>
         {% endif %}
         <hr>
+    {% if color == 'light' %}
         <a class="btn btn-outline-dark" href="{% url 'articles:index' %}"><span
                 class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    {% else %}
+        <a class="btn btn-outline-light" href="{% url 'articles:index' %}"><span
+                class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    {% endif %}
     </div>
 {% endblock %}

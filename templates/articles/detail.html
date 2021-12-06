@@ -5,8 +5,14 @@
 {% block theme %}class="bg-{{ color }} text-dark"{% endblock %}
 
 {% block content %}
-    <a class="btn btn-dark" href="{% url 'articles:index' %}"><span
-            class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    {% if color == 'light' %}
+        <a class="btn btn-outline-dark mb-4" href="{% url 'articles:index' %}"><span
+                class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    {% else %}
+        <a class="btn btn-outline-light mb-4" href="{% url 'articles:index' %}"><span
+                class="bi bi-card-list"></span> Перейти к списку статей</a><br>
+    {% endif %}
+
     {% if user.is_authenticated %}
         {% if user.is_superuser or user.username == article.author_name %}
             <a class="btn btn-info" href="{% url 'articles:edit' article.id %}">Редактировать</a>

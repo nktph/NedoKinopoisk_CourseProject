@@ -110,9 +110,15 @@
             <div class="card w-50 bg-{{ color }} text-dark">
                 <div class="card-body">
                     <h5 class="card-title">Облако тегов</h5>
+                {% if color == 'secondary' %}
                     {% for tag in tags %}
                         <em><a href="{% url 'articles:bytags' tag.id %}" class="card-text"><span class="btn btn-primary">{{ tag.name }}</span></a></em>
                     {% endfor %}
+                {% else %}
+                    {% for tag in tags %}
+                        <em><a href="{% url 'articles:bytags' tag.id %}" class="card-text"><span class="btn btn-secondary">{{ tag.name }}</span></a></em>
+                    {% endfor %}
+                {% endif %}
                 </div>
             </div>
         </div>

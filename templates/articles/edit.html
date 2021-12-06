@@ -5,32 +5,28 @@
 {% endblock %}
 
 {% block title %}Редактирование статьи{% endblock %}
-
 {% block theme %}class="bg-{{ color }} text-dark"{% endblock %}
-
 {% block content %}
-
-    <a class="btn btn-default" href="{% url 'articles:index' %}" class="top-menu"><span class="glyphicon glyphicon-remove"></span>Отмена</a><br>
-
+    <a class="btn btn-danger top-menu" href="{% url 'articles:index' %}">Отмена</a><br>
     <h1>Редактирование статьи</h1>
-
     <script>
     tinymce.init({
         language:'ru',
       selector: 'textarea',
+        images_upload_url: 'https://drive.google.com/drive/folders/1hmeswUcLclMjPMvOsnkiOFbBtQgblWmw?usp=sharing',
       plugins: 'casechange formatpainter linkchecker autolink lists checklist media permanentpen table paste link autoresize',
+        width: '100%',
         menubar: "format insert",
       toolbar: 'casechange checklist formatpainter paste permanentpen table link media',
       toolbar_mode: 'floating',
         paste_data_images: true,
-
     });
   </script>
     <div class="fieldBox">
         <form method="POST" class="post-form">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-outline-success">Сохранить</button>
+            <button type="submit" class="btn btn-success">Сохранить</button>
         </form>
     </div>
 {% endblock %}

@@ -7,19 +7,16 @@ from django.utils import timezone
 from django.contrib.postgres.search import SearchVector
 from taggit.models import Tag
 
-
 def home(request):
     latest_articles_list = Article.objects.order_by('-pub_date')[:5]
     best = Article.objects.order_by('-likes')[:3]
     tags = Tag.objects.all()
-
     if not request.user.is_authenticated:
         color = 'light'
         return render(request, 'base.html', {'latest_articles_list': latest_articles_list,
                                              'best': best,
                                              'tags': tags,
                                              'color': color})
-
     elif Theme.objects.filter(user=request.user).exists():
         color=Theme.objects.get(user=request.user).color
     else:
@@ -44,7 +41,6 @@ def userprofile(request):
         color=Theme.objects.get(user=request.user).color
     else:
         color='light'
-
     return render(request, 'account/userprofile.html', {'article_list': article_list,
                                                         'likes_count':likes_count,
                                                         'color':color})
@@ -66,7 +62,6 @@ def detail(request, article_id, form=0):
     except:
         raise Http404("Статья не найдена!")
     latest_comment_list = a.comment_set.order_by('-id')
-
     ratings_avg, ratings_count = a.avg_rating(2)
     group = a.group
     form = RatingForm()
@@ -86,15 +81,11 @@ def detail(request, article_id, form=0):
                                                     'group':group,
                                                     'color':color})
 
-
-
 def like(request, article_id):
     user_liking = request.user
     article = Article.objects.get(id=article_id)
     current_likes = article.likes
-
     liked = Like.objects.filter(user=user_liking, article=article, type_like=1).count()
-
     if not liked:
         like = Like.objects.create(user=user_liking, article=article, type_like=1)
         current_likes+=1
@@ -104,7 +95,6 @@ def like(request, article_id):
 
     article.likes = current_likes
     article.save()
-
     return HttpResponseRedirect( reverse('articles:detail', args=(article.id,)) )
 
 def leave_comment(request, article_id):
@@ -112,7 +102,6 @@ def leave_comment(request, article_id):
         a = Article.objects.get(id=article_id)
     except:
         raise Http404("Статья не найдена!")
-
     a.comment_set.create(author_name=request.user.username, comment_text=request.POST['text'])
     return HttpResponseRedirect( reverse('articles:detail', args=(a.id,)) )
 
@@ -121,7 +110,6 @@ def rate(request, article_id):
         article = Article.objects.get(id=article_id)
     except:
         raise Http404("Статья не найдена!")
-
     user = request.user
     r = Rating.objects.filter(user=user, article=article)
     if request.method == 'POST':
@@ -134,7 +122,6 @@ def rate(request, article_id):
             rate.article = article
             rate.save()
     else: return Http404("Что-то пошло не так")
-
     return HttpResponseRedirect( reverse('articles:detail', args=(article.id,)) )
 
 def new(request):
@@ -193,20 +180,9 @@ def search(request):
         searched = request.POST.get('searched')
 
         articles = Article.objects.annotate(search=SearchVector('article_title')).filter(search=str(searched))
-
         text = Article.objects.annotate(search=SearchVector('article_text')).filter(search=str(searched))
-
         comments = Comment.objects.annotate(search=SearchVector('comment_text')).filter(search=str(searched))
-
-        # articles = Article.objects.annotate(similarity = TrigramSimilarity('article_title', searched),).filter(
-        #     similarity__gt=0.1).order_by('-similarity')
-        # text = Article.objects.annotate(search=SearchVector('article_text')).filter(search=searched)
-        # comments = Comment.objects.annotate(similarity=TrigramSimilarity('comment_text', searched), ).filter(
-        #     similarity__gt=0.1).order_by('-similarity')
-
         tags = Article.objects.filter(tags__name__in=[searched])
-
-
 
         return render(request, 'articles/search.html', {'searched':searched, 'in_articles':articles,
                                                         'in_text':text, 'in_tags':tags,
@@ -226,7 +202,6 @@ def bytags(request, tag_id):
     return render(request, 'articles/bytags.html',{'articles': articles,
                                                    'tagname':tag.name,
                                                    'color':color})
-
 
 def theme(request):
     color = request.GET.get('color')
@@ -248,5 +223,4 @@ def theme(request):
         else:
             user4=Theme(user=request.user, color='light')
             user4.save()
-
     return redirect('/')

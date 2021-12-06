@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{a.article_title}}</h5>
                             <em class="card-text">by {{ a.author_name }}</em>
-                            <a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+                            <p><a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a></p>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{a.article_title}}</h5>
                             <em class="card-text">by {{ a.author_name }}</em>
-                            <a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a>
+                            <p><a class="btn btn-primary" href={% url 'articles:detail' a.id %}>Перейти</a></p>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                             <h5 class="card-title">{{t.article_title}}</h5>
                             <em class="card-text">by {{ t.author_name }}</em>
                             <p>теги: {{ t.tags.all|join:", "  }}</p>
-                            <a class="btn btn-primary" href={% url 'articles:detail' t.id %}>Перейти</a>
+                            <p><a class="btn btn-primary" href={% url 'articles:detail' t.id %}>Перейти</a></p>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                                     {% else %}
                                         <em>Чтение комментариев доступно только аутентифицированным пользователям</em>
                                     {% endif %}
-                                    <a class="btn btn-primary" href={% url 'articles:detail' c.article.id %}>Перейти</a>
+                                    <p><a class="btn btn-primary" href={% url 'articles:detail' c.article.id %}>Перейти</a></p>
                                 </div>
                             </div>
                         </div>

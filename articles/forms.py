@@ -8,8 +8,6 @@ class ArticleForm(forms.ModelForm):
 
 class RatingForm(forms.ModelForm):
     rate = forms.ChoiceField(choices=RATE_CHOISES, widget=forms.Select(), required=True)
-
     class Meta:
         model=Rating
         fields=('rate',)
-

@@ -6,6 +6,7 @@
 <div style="text-align: center;" class="mt-2">
     {% if user.is_superuser %}
         <h3>Профиль администратора {{ user.username }}</h3>
+        <a href=""></a>
     {% else %}
         <h3>Профиль пользователя {{ user.username }}</h3>
     {% endif %}
@@ -31,7 +32,11 @@
         <h3>Ваши статьи</h3>
     {% endif %}
 
-        <a class="btn btn-outline-secondary mb-4" href="{% url 'articles:new' %}">Новая статья</a>
+        {% if color == 'light' %}
+            <a class="btn btn-outline-dark mb-4" href="{% url 'articles:new' %}">Новая статья</a>
+        {% else %}
+            <a class="btn btn-outline-light mb-4" href="{% url 'articles:new' %}">Новая статья</a>
+        {% endif %}
     </div>
     {% for a in article_list %}
         <div class="col d-flex justify-content-center">
@@ -59,7 +64,11 @@
 {% else %}
     <div style="text-align: center;">
         <h3>У вас ещё нет ни одной написанной статьи. Исправьте это!</h3>
-        <a class="btn btn-outline-secondary" href="{% url 'articles:new' %}">Новая статья</a>
+        {% if color == 'light' %}
+            <a class="btn btn-outline-dark" href="{% url 'articles:new' %}">Новая статья</a>
+        {% else %}
+            <a class="btn btn-outline-light" href="{% url 'articles:new' %}">Новая статья</a>
+        {% endif %}
     </div>
 {% endif %}
 

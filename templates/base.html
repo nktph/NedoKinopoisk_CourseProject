@@ -49,8 +49,11 @@
 
 {% block content %}
     <br>
-        <a class="btn btn-outline-dark" href="{% url 'articles:index' %}"><span
-                class="bi bi-card-list"></span>Все статьи</a>
+        {% if color == 'light' %}
+            <a class="btn btn-outline-dark" href="{% url 'articles:index' %}">Все статьи</a>
+        {% else %}
+            <a class="btn btn-outline-light" href="{% url 'articles:index' %}">Все статьи</a>
+        {% endif %}
     <br>
 
     {% if latest_articles_list %}
